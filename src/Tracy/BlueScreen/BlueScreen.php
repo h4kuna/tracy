@@ -77,11 +77,11 @@ class BlueScreen
 	 */
 	public function render(\Throwable $exception): void
 	{
-		if (Helpers::isAjax() && session_status() === PHP_SESSION_ACTIVE) {
+		if (Helpers::isAjax() && Debugger::getStorage()->isActive()) {
 			ob_start(function () {});
 			$this->renderTemplate($exception, __DIR__ . '/assets/content.phtml');
 			$contentId = $_SERVER['HTTP_X_TRACY_AJAX'];
-			$_SESSION['_tracy']['bluescreen'][$contentId] = ['content' => ob_get_clean(), 'time' => time()];
+			Debugger::getStorage()->save(['content' => ob_get_clean(), 'time' => time()], 'bluescreen', $contentId);
 
 		} else {
 			$this->renderTemplate($exception, __DIR__ . '/assets/page.phtml');
