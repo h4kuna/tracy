@@ -35,7 +35,7 @@ class SessionStorage implements IStorage
 
 	public function load(string ...$keys): array
 	{
-		$target = &$_SESSION['_tracy'];
+		$target = $_SESSION['_tracy'] ?? [];
 		foreach ($keys as $key) {
 			$target = $target[$key] ?? [];
 		}
