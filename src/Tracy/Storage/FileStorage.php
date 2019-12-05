@@ -2,6 +2,7 @@
 
 namespace Tracy;
 
+use Nette\Utils\FileSystem;
 
 class FileStorage implements IStorage
 {
@@ -16,10 +17,7 @@ class FileStorage implements IStorage
 
 	public function __construct(string $tempDir)
 	{
-		if (!is_dir($tempDir)) {
-			throw new \RuntimeException("Temporary directory '{$this->tempDir}' needs to exist.");
-		}
-
+		FileSystem::createDir($tempDir);
 		$this->tempDir = $tempDir;
 
 		if (isset($_COOKIE[self::COOKIE_NAME])) {
